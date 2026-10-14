@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Interview"
+  short_description: "Plan projects and learn to build with hints first"
+  default_prompt: "Use $project-interview to interview me about my idea, recommend its architecture, and guide me one task at a time with hints first."
