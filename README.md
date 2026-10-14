@@ -1,41 +1,37 @@
 # Project Interview
 
-**An AI project mentor that helps you plan clearly and learn by building.**
+**A reusable AI skill for project planning and ongoing development mentoring.**
 
-This reusable skill interviews you about your idea, recommends a suitable stack and architecture, and guides you through development with **hints first**. It runs inside a compatible coding agent, with Codex metadata included.
+Project Interview turns a software idea into a practical build plan. It asks about your requirements and experience, recommends technologies and an application structure, then guides you through one task at a time. Its default teaching style is **hints first**: you write the code, and the mentor helps you understand and check your work.
 
-## What it does
+## Requirements
 
-- Adapts questions to your experience, goals, project type, budget, and expected scale.
-- Explains the chosen technologies, data flow, and folder structure for each relevant layer.
-- Creates an ordered roadmap with prerequisites and practical completion checks.
-- Covers security, accessibility, testing, deployment, recovery, and growth where relevant.
-- Reviews your attempts, suggests improvements, and resumes from saved project notes.
+- A coding agent that supports `SKILL.md` skills. Codex installation is documented below.
+- Access to your project folder if you want code review and saved progress.
+- Browsing tools for checking current documentation, when available.
 
-MERN is welcome, but not required. Small projects receive small architectures. Code examples or implementation are available when you explicitly ask.
+The skill does not run a website or require its own server, database, or API key. It uses your agent's model and tools, with the host's normal usage limits.
 
-## Install in Codex
+## Installation
 
-Ask the built-in installer:
+In Codex, send this message:
 
 ```text
 $skill-installer Install the skill from https://github.com/ahmedsamy13/Project-interview/tree/main/skills/project-interview
 ```
 
-Or clone this repository and copy **the entire `skills/project-interview` folder** to one of these locations:
+For manual installation, clone this repository or download its ZIP. Copy **the entire `skills/project-interview` folder**, including its references and templates, to one of these locations:
 
 | Scope | Destination |
 |---|---|
 | All your projects | `~/.agents/skills/project-interview` |
 | One repository | `<your-project>/.agents/skills/project-interview` |
 
-On Windows, `~` means your user profile folder. Some installations use `$CODEX_HOME/skills` (usually `~/.codex/skills`); use the location supported by your host and install only one copy. If the skill does not appear, restart Codex. See the [official skill documentation](https://learn.chatgpt.com/docs/build-skills).
+On Windows, `~` means your user profile folder. Some hosts and installers use `$CODEX_HOME/skills`, usually `~/.codex/skills`. Use the location supported by your installation and keep only one copy. If the skill does not appear, restart Codex. [Official installation reference](https://learn.chatgpt.com/docs/build-skills).
 
-No application server, database, or separate API key is required by this skill. It uses the model and tools available in your agent; normal host usage limits still apply.
+## Quick start
 
-## Use it
-
-Open the project you want help with, then start a chat:
+Open the project folder you want to work on, then send:
 
 ```text
 Use $project-interview. I want to build a tutor booking app using MERN.
@@ -43,28 +39,62 @@ I know React basics and want to practice backend development.
 Interview me first, then recommend the structure and a roadmap. Hints first.
 ```
 
-Continue naturally:
+You can use MERN or another stack. For an existing project, ask the mentor to inspect the current structure before recommending changes.
 
-| You want to... | Say... |
+## Workflow and outputs
+
+| Stage | What the skill does | Output |
+|---|---|---|
+| Interview | Clarifies users, features, learning goals, budget, and constraints | Project brief with requirements and open questions |
+| Architecture | Explains technology choices, data flow, responsibilities, and folder structure | Technical plan with reasons and tradeoffs |
+| Roadmap | Chooses a starting point and orders features by their dependencies | Tasks with prerequisites and completion checks |
+| Mentoring | Explains concepts, gives progressive hints, and reviews attempts | Guidance for the current task |
+| Continuation | Records decisions, tracks evidence, and adjusts to changed requirements | Saved progress and the next useful step |
+
+Planning also covers security, accessibility, performance, testing, deployment, and recovery where they apply. The depth matches the project: a local CLI should not receive the architecture of a large hosted service.
+
+## Common requests
+
+```text
+Use $project-interview to resume this project's saved plan.
+Explain why this feature should come before the others.
+Give me one hint without showing the solution.
+Review my attempt against the current task's completion checks.
+Show a small code example for this concept; don't edit files.
+Add team accounts and explain which requirements and tasks change.
+Save my progress and record what I should do next.
+```
+
+These are ordinary chat requests, not a fixed command syntax. To work without saving files, add: `Keep everything in chat; do not create or edit files.`
+
+## Saved project state
+
+When persistent mentoring is authorized, the skill maintains notes in your project's `.mentor/` folder, or reuses existing planning documents:
+
+| File | Contents |
 |---|---|
-| Start the next task | "What should I work on next, and why?" |
-| Get help | "Give me one hint. Don't show the solution yet." |
-| Review an attempt | "Review this code against my current task." |
-| Change scope | "Add team accounts and explain what the plan needs to change." |
-| Save or resume | "Save my progress." / "Resume this project from its saved notes." |
-| Stay in chat | "Plan only in chat; don't create or edit files." |
+| `brief.md` | Requirements, learning goals, scope, and assumptions |
+| `architecture.md` | Stack, structure, data model, and research notes |
+| `roadmap.md` | Task order, dependencies, status, and evidence |
+| `progress.md` | Latest result, blockers, and next action |
+| `decisions.md` | Important decisions and their reasons |
+| `tasks/` | Detailed task notes when needed |
 
-When saving is authorized, the mentor maintains `.mentor/` notes in your project for requirements, architecture, decisions, roadmap, and progress. It distinguishes your reported completion from reviewed code and executed tests. Review notes before sharing them; keep secrets out.
+Files are created as needed. Project history stays with the project, not inside the installed skill. In a chat without file access, the mentor can provide a handoff to copy, but cannot save it for you.
 
-## Inside the skill
+## Behavior and limits
 
-[SKILL.md](skills/project-interview/SKILL.md) contains the workflow. Focused [references](skills/project-interview/references) cover interviews, architecture, quality, mentoring, and memory. [Templates](skills/project-interview/assets/templates) keep project records consistent.
+- Hints come before solutions; code examples and implementation require your request.
+- Reported completion, reviewed code, and executed tests are recorded separately.
+- Recommendations identify assumptions and checks; they do not guarantee security, scale, or compliance.
+- Research and code inspection depend on available tools. Publishing or deployment requires authorization.
+- Review saved notes before sharing them, and keep credentials and private data out.
 
-Recommendations depend on the information and tools available. The skill cannot guarantee security, scalability, or compliance; it identifies assumptions and the checks needed to establish them.
+## Skill files and validation
 
-## Validation
+The entry point is [SKILL.md](skills/project-interview/SKILL.md). Supporting [references](skills/project-interview/references) provide focused guidance; [templates](skills/project-interview/assets/templates) define the project records.
 
-Maintainers can run structural checks with Python 3.10+:
+For maintainers, run the package checks with Python 3.10+:
 
 ```sh
 python -m pip install -r requirements-dev.txt
